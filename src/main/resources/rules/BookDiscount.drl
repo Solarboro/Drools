@@ -1,0 +1,50 @@
+package book.discount;
+
+import org.solar.entity.Order;
+
+rule "Rule 1"
+    when
+        $o: Order(originalPrice < 100)
+    then
+        $o.setRealPrice($o.getOriginalPrice());
+        update($o);
+        System.out.println("rule 1 enable");
+end
+
+rule "Rule 2"
+    when
+        $o: Order(originalPrice >= 100, originalPrice < 200)
+    then
+        $o.setRealPrice($o.getOriginalPrice()-20);
+        update($o)
+        System.out.println("rule 2 enable");
+end
+
+rule "Rule 3"
+    when
+        $o: Order(originalPrice >= 200, originalPrice < 300)
+    then
+        $o.setRealPrice($o.getRealPrice()-50);
+        update($o)
+        System.out.println("rule 3 enable");
+end
+
+rule "Rule 4"
+    when
+        $o: Order(originalPrice > 300)
+    then
+        $o.setRealPrice($o.getRealPrice()-100);
+        update($o)
+        System.out.println("rule 4 enable");
+end
+
+
+rule "Rule Generic"
+    when
+        $o: Order($o.getRealPrice() > 0)
+    then
+        System.out.println("Generic. get Original Price");
+        System.out.println($o.getOriginalPrice());
+        System.out.println("rule Generic enable");
+end
+
